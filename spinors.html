@@ -6,49 +6,50 @@
 <body>
 <script src="js/three.min.js"></script>
 <script type="text/javascript" src="js/dat.gui.min.js"></script>
-
 <script>
-
+/*
+Following Jean Hladik "Spinors in Physics"
+*/
 
 var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 1000);
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(renderer.domElement);
-			var geometry = new THREE.SphereGeometry(20,20,20);
-			var material = new THREE.MeshNormalMaterial();
-            var sphere = new THREE.Mesh(geometry, material);
-            sphere.position.z = 0;
-            sphere.overdraw = true;
-			scene.add(sphere);
-            var axes = new THREE.AxisHelper( 200 );
-            scene.add(axes);
-            var plane = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.MeshNormalMaterial());
-            plane.overdraw = true;
-            plane.position.x = 23;
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 1000);
+var renderer = new THREE.WebGLRenderer();
+var geometry = new THREE.SphereGeometry(20,20,20);
+var material = new THREE.MeshNormalMaterial();
+var axes = new THREE.AxisHelper( 200 );
 
-            plane.rotation.z = 0;
-            plane.rotation.x = 00;
-            scene.add(plane);
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+scene.add(axes);
+var plane = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.MeshNormalMaterial());
+plane.overdraw = true;
+plane.position.x = 23;
+plane.rotation.z = 0;
+plane.rotation.x = 00;
+scene.add(plane);
+camera.position.z = 100;
 
+var controls = new function() {
+               this.nu_real = 0.5;
+               this.nu_im = 0.5;
+               this.phi_real= 0.5;
+               this.phi_im = 0.5;
+}
 
-            camera.position.z = 100;
+var gui = new dat.GUI();
 
-            var controls = new function() {
-                 this.rotationSpeed = 0.02;
-            }
+gui.add(controls, 'nu_real',0,5);
+gui.add(controls, 'nu_im',0,5);
+gui.add(controls, 'phi_real',0,5);
+gui.add(controls, 'phi_im',0,5);
 
-           var gui = new dat.GUI();
-            gui.add(controls, 'rotationSpeed',0,0.5);
-
-            function render() {
+function render() {
     plane.rotation.x += controls.rotationSpeed;
     requestAnimationFrame(render);
     renderer.render(scene,camera);
 }
 
-
-			render();
+render();
 </script>
 </body>
 </html>
